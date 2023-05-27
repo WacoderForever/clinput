@@ -4,8 +4,12 @@ CliInterface newCliInterface(){
 
     self.warning_color = CLI_YELLOW;
     self.error_color = CLI_RED;
-    self.normal_color = CLI_GREEN;
+    self.normal_color = CLI_WHITE;
+
+    self.ask_color = CLI_GREEN;
+    self.response_color =CLI_MAGENTA;
     self.sucess_color = CLI_BLUE;
+
 
     self.invalid_type_mensage = "The value its not an #type#";
     self.min_value_mensage = "The value its lower than #min_value#";
@@ -18,15 +22,18 @@ CliInterface newCliInterface(){
 
 }
 
+
+
 char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim){
-    
+
     if(mensage[strlen(mensage)-1] != '\n'){
-        printf("%s %s: ",self->normal_color,mensage);
+        printf("%s %s: ",self->ask_color,mensage);
     }
     else{
-        printf("%s %s",self->normal_color,mensage);
-
+        printf("%s %s",self->ask_color,mensage);
     }
+    printf("%s",self->response_color);
+
     fflush(stdin);
     char value[3000];
     int value_size;
@@ -39,6 +46,7 @@ char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim
         }
         value[value_size] = ch;
     }
+    printf("%s",self->normal_color);
 
 
     char *formated_value = (char*)malloc(value_size + 2);
@@ -79,6 +87,7 @@ char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim
             break;
         }
     }
+
     return formated_value;
 
 

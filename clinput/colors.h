@@ -4,4 +4,4 @@
 #define CLI_BLUE    "\x1b[34m"
 #define CLI_MAGENTA "\x1b[35m"
 #define CLI_CYAN    "\x1b[36m"
-#define CLI_RESET   "\x1b[0m"
+#define CLI_WHITE   "\x1b[0m"
