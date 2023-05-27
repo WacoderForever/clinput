@@ -18,10 +18,43 @@ CliInterface newCliInterface(){
 
 }
 
-char * CliInterface_ask_string(struct CliInterface *self,char *mensage){
+char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim){
 
-    printf("%s %s:",self->normal_color,mensage);
-    char *value = (char*)malloc(1000);
-    scanf("%s",value);
-    return value;
+    printf("%s %s: ",self->normal_color,mensage);
+    char value[1000];
+    int value_size;
+
+    for(value_size =0; value_size < 1000;value_size++){
+        char ch;
+        ch = getchar();
+        if(ch == '\n'){
+            break;
+        }
+        value[value_size] = ch;
+    }
+
+
+    char *formated_value = (char*)malloc(value_size);
+
+
+    //implementing the trim system
+
+    bool finded_start;
+    int text_size = 0;
+
+    for(int i = 0; i < value_size;i++){
+        char current_char = value[i];
+        if(current_char != ' '){
+            finded_start = true;
+        }
+        if(finded_start){
+            formated_value[text_size] = current_char;
+            text_size+=1;
+        }
+    }
+
+    formated_value[value_size] = '\0';
+
+
+    return formated_value;
 }

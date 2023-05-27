@@ -8,8 +8,8 @@
 int main(){
 
     CliInterface  interface = newCliInterface();
-    char *result = interface.ask_string(&interface,"type something");
-    printf("%s",result);
+    char *result = interface.ask_string(&interface,"type something",CLI_NOT_TRIM);
+    printf("r = (%s)",result);
 
     free(result);
 

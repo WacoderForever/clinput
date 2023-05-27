@@ -16,7 +16,7 @@ typedef struct CliInterface{
     char * max_value_mensage;
     char * wrong_option_menssage;
 
-    char   *(*ask_string)(struct CliInterface *self,char *mensage);
+    char   *(*ask_string)(struct CliInterface *self,char *mensage,bool trim);
 
     long   (*ask_integer)(struct CliInterface *self,char *mensage, long min, long max);
     double (*ask_double)(struct CliInterface *self,char *mensage,double min, double max);
@@ -31,4 +31,4 @@ typedef struct CliInterface{
 CliInterface newCliInterface();
 
 
-char * CliInterface_ask_string(struct CliInterface *self,char *mensage);
+char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim);
