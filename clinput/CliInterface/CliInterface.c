@@ -19,9 +19,16 @@ CliInterface newCliInterface(){
 }
 
 char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim){
+    
+    if(mensage[strlen(mensage)-1] != '\n'){
+        printf("%s %s: ",self->normal_color,mensage);
+    }
+    else{
+        printf("%s %s",self->normal_color,mensage);
 
-    printf("%s %s: ",self->normal_color,mensage);
-    char value[1000];
+    }
+    fflush(stdin);
+    char value[3000];
     int value_size;
 
     for(value_size =0; value_size < 1000;value_size++){
@@ -34,16 +41,24 @@ char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim
     }
 
 
-    char *formated_value = (char*)malloc(value_size);
+    char *formated_value = (char*)malloc(value_size + 2);
+    strcpy(formated_value,"\0");
 
+    if (trim == CLI_NOT_TRIM){
+        strcpy(formated_value,value);
+        formated_value[value_size]= '\0';
+        return formated_value;
+    }
 
     //implementing the trim system
 
-    bool finded_start;
+    bool finded_start = false;
     int text_size = 0;
+
 
     for(int i = 0; i < value_size;i++){
         char current_char = value[i];
+
         if(current_char != ' '){
             finded_start = true;
         }
@@ -53,8 +68,18 @@ char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim
         }
     }
 
-    formated_value[value_size] = '\0';
 
+    formated_value[text_size] = '\0';
 
+    for(int i = text_size; i > 0; i--){
+        char current_char = formated_value[i];
+
+        if(current_char != ' ' && current_char != '\n' && current_char!= '\0'){
+            formated_value[i+1] = '\0';
+            break;
+        }
+    }
     return formated_value;
+
+
 }
