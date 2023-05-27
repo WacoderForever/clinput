@@ -8,10 +8,9 @@
 int main(){
 
     CliInterface  interface = newCliInterface();
-    char *result = interface.ask_string(&interface,"type something",CLI_TRIM);
-    printf("r = (%s)",result);
+    char *name = interface.ask_string(&interface,"type your name",CLI_TRIM);
 
-    free(result);
+
 
     return 0;
 }
