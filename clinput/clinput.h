@@ -21,6 +21,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#ifndef CLI_INPUT
+#define CLI_INPUT
+
 
 #include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include "extra/extra.h"
 #include "colors.h"
+#include "CliInterface/CliInterface.h"
+
+
+#include "CliInterface/CliInterface.c"
+#include "extra/extra.c"
+#endif
