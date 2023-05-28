@@ -21,12 +21,172 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#ifndef CLI_INPUT
+#define CLI_INPUT
+
 
 #include <stdio.h>
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define CLI_TRIM true
+#define CLI_NOT_TRIM false
+#define CLI_RED     "\x1b[31m"
+#define CLI_GREEN   "\x1b[32m"
+#define CLI_YELLOW  "\x1b[33m"
+#define CLI_BLUE    "\x1b[34m"
+#define CLI_MAGENTA "\x1b[35m"
+#define CLI_CYAN    "\x1b[36m"
+#define CLI_WHITE   "\x1b[0m"
+
+
+typedef struct CliInterface{
+
+    //colors
+    char * warning_color;
+    char * error_color;
+    char * normal_color;
+    char * ask_color;
+    char * response_color;
+    char * sucess_color;
+
+
+    //warnings mensage
+    char * invalid_int_menssage;
+    char * wrong_option_menssage;
+
+    char   *(*ask_string)(struct CliInterface *self,const char *mensage,bool trim);
+
+    int   (*ask_integer)(struct CliInterface *self,const char *mensage);
+    long  (*ask_long)(struct CliInterface *self,const char *mensage);
+
+    double (*ask_double)(struct CliInterface *self,const char *mensage,double min, double max);
+
+
+
+
+}CliInterface;
+
+
+//constructor method
+CliInterface newCliInterface();
+
+
+char * CliInterface_ask_string(struct  CliInterface *self,const char *mensage,bool trim);
+long   CliInterface_ask_long(struct CliInterface *self,const char *mensage);
+
+
+CliInterface newCliInterface(){
+    CliInterface self;
+
+    self.warning_color = CLI_YELLOW;
+    self.error_color = CLI_RED;
+    self.normal_color = CLI_WHITE;
+
+    self.ask_color = CLI_GREEN;
+    self.response_color =CLI_MAGENTA;
+    self.sucess_color = CLI_BLUE;
+
+    self.invalid_int_menssage = "The value its not an Integer";
+    self.wrong_option_menssage = "The value should be betwen #options#";
+
+    //methods
+    self.ask_string = CliInterface_ask_string;
+    self.ask_long= CliInterface_ask_long;
+    return self;
+
+}
+
+
+
+char * CliInterface_ask_string(struct CliInterface *self,const char *mensage,bool trim){
+
+    if(mensage[strlen(mensage)-1] != '\n'){
+        printf("%s %s: ",self->ask_color,mensage);
+    }
+    else{
+        printf("%s %s",self->ask_color,mensage);
+    }
+    printf("%s",self->response_color);
+
+    fflush(stdin);
+    char value[3000];
+    int value_size;
+
+    for(value_size =0; value_size < 1000;value_size++){
+        char ch;
+        ch = getchar();
+        if(ch == '\n'){
+            break;
+        }
+        value[value_size] = ch;
+    }
+    printf("%s",self->normal_color);
+
+
+    char *formated_value = (char*)malloc(value_size + 2);
+    strcpy(formated_value,"\0");
+
+    if (trim == CLI_NOT_TRIM){
+        strcpy(formated_value,value);
+        formated_value[value_size]= '\0';
+        return formated_value;
+    }
+
+    //implementing the trim system
+
+    bool finded_start = false;
+    int text_size = 0;
+
+
+    for(int i = 0; i < value_size;i++){
+        char current_char = value[i];
+
+        if(current_char != ' '){
+            finded_start = true;
+        }
+        if(finded_start){
+            formated_value[text_size] = current_char;
+            text_size+=1;
+        }
+    }
+
+
+    formated_value[text_size] = '\0';
+
+    for(int i = text_size; i > 0; i--){
+        char current_char = formated_value[i];
+
+        if(current_char != ' ' && current_char != '\n' && current_char!= '\0'){
+            formated_value[i+1] = '\0';
+            break;
+        }
+    }
+
+    return formated_value;
+
+
+}
+long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
+   while(true){
+     char *value=self->ask_string(self,mensage,CLI_TRIM);
+    long converted;
+     int result =  sscanf(value,"%li",&converted);
+     free(value);
+     //means its an error
+
+     if(result == 0){
+         printf("%s %s\n",self->error_color,self->invalid_int_menssage);
+         printf("%s",self->normal_color);
+
+     }
+     else{
+         return converted;
+     }
+
+   }
+
+}
+#endif
