@@ -33,14 +33,20 @@ SOFTWARE.
 #include <stdarg.h>
 
 #define CLI_TRIM true
+<<<<<<< HEAD
 #define CLI_NOT_TRIM false
 #define CLI_RED     "\x1b[31m"
+=======
+#define CLI_NOT_TRIM false#define CLI_RED     "\x1b[31m"
+>>>>>>> 0329048f01f9b1ed0ac6a5d3d230593da1470d2e
 #define CLI_GREEN   "\x1b[32m"
 #define CLI_YELLOW  "\x1b[33m"
 #define CLI_BLUE    "\x1b[34m"
 #define CLI_MAGENTA "\x1b[35m"
 #define CLI_CYAN    "\x1b[36m"
 #define CLI_WHITE   "\x1b[0m"
+
+char *cli_trim_string(const char *value);
 
 
 char *cli_trim_string(const char *value);
@@ -127,6 +133,28 @@ char *cli_trim_string(const char *value){
 
     return formated_value;
 
+<<<<<<< HEAD
+=======
+        if(finded_start){
+            formated_value[text_size] = current_char;
+            text_size++;
+        }
+    }
+
+    for(int i = text_size; i >= 0;i--){
+        char current_char = formated_value[i -1];
+        if(current_char !=  ' '){
+            formated_value[i] = '\0';
+            break;
+        }
+
+    }
+
+
+
+    return formated_value;
+
+>>>>>>> 0329048f01f9b1ed0ac6a5d3d230593da1470d2e
 }
 CliInterface newCliInterface(){
     CliInterface self;
@@ -341,6 +369,7 @@ void CliInterface_print(struct CliInterface *self,const  char *format,...){
     int text_size = strlen(format);
 
     printf("%s",self->print_color);
+<<<<<<< HEAD
 
     for(int i =0;i < text_size ;i++){
         char last_char =  format[i-1];
@@ -356,6 +385,23 @@ void CliInterface_print(struct CliInterface *self,const  char *format,...){
                 printf("%c",result);
             }
 
+=======
+
+    for(int i =0;i < text_size ;i++){
+        char last_char =  format[i-1];
+        char current_char =  format[i];
+        if(last_char =='%'){
+            if(current_char == 'd' || current_char == 'i'){
+
+                printf("%d", va_arg(argptr,int));
+            }
+
+            else if(current_char == 'c'){
+                char result = va_arg(argptr,int);
+                printf("%c",result);
+            }
+
+>>>>>>> 0329048f01f9b1ed0ac6a5d3d230593da1470d2e
             else if(current_char == 'b'){
                 bool value = va_arg(argptr,int);
                 if(value){
