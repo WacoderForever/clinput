@@ -33,3 +33,4 @@ CliInterface newCliInterface();
 
 
 char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim);
+long   CliInterface_ask_integer(struct CliInterface *self,char *mensage,int min,int max);
