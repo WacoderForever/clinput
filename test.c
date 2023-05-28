@@ -8,7 +8,7 @@
 long main(){
 
     CliInterface  interface = newCliInterface();
-    bool  option = interface.ask_option( &interface,"are you gay? ","yes | no");
+    bool  option = interface.ask_option( &interface,"are you religious? ","yes | no");
     printf("%i",option);
 
     return 0;

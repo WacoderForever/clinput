@@ -161,7 +161,8 @@ This page allows selection of options provide and returns the index of the selec
 long main(){
 
    CliInterface  interface = newCliInterface();
-    int chosed = interface.ask_option(&interface,"type the option" ,"aaa | aaa | bbb | lll");
+   interface.wrong_option_menssage="Come on don't panic...you are either one of those";
+    bool chosed = interface.ask_option(&interface,"Are you religious" ,"yes | no");
 
     printf("%i\n",chosed);
     return 0;
@@ -209,7 +210,7 @@ int main(){
 
    CliInterface  interface = newCliInterface();
    interface.wrong_option_menssage="The option does not exist ";
-   int chosed = interface.ask_option(&interface,"type the option" ,"aaa | aaa | bbb | lll");
+    int chosed = interface.ask_option(&interface,"Are you religious?:" ,"yes | no");
     printf("%i\n",chosed);
     return 0;
 }
