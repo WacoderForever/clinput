@@ -12,16 +12,18 @@ typedef struct CliInterface{
 
 
     //warnings mensage
-    char * invalid_int_menssage;
+    char * invalid_long_menssage;
     char * invalid_double_menssage;
     char * wrong_option_menssage;
 
+
     char   *(*ask_string)(struct CliInterface *self,const char *mensage,bool trim);
 
-    int   (*ask_integer)(struct CliInterface *self,const char *mensage);
+
     long  (*ask_long)(struct CliInterface *self,const char *mensage);
 
     double (*ask_double)(struct CliInterface *self,const char *mensage);
+
 
 
 

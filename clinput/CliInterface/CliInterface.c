@@ -10,14 +10,16 @@ CliInterface newCliInterface(){
     self.response_color =CLI_MAGENTA;
     self.sucess_color = CLI_BLUE;
 
-    self.invalid_int_menssage = "The value its not an Integer";
+    self.invalid_long_menssage = "The value its not an Integer";
     self.invalid_double_menssage = "The value its not a double";
     self.wrong_option_menssage = "The value should be betwen #options#";
 
     //methods
     self.ask_string = CliInterface_ask_string;
+
     self.ask_long= CliInterface_ask_long;
     self.ask_double= CliInterface_ask_double;
+
     return self;
 
 }
@@ -101,7 +103,7 @@ long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
      //means its an error
 
      if(result == 0){
-         printf("%s %s\n",self->error_color,self->invalid_int_menssage);
+         printf("%s %s\n",self->error_color,self->invalid_long_menssage);
          printf("%s",self->normal_color);
 
      }
@@ -112,6 +114,8 @@ long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
    }
 
 }
+
+
 double CliInterface_ask_double(struct CliInterface *self,const char *mensage){
      while(true){
      char *value=self->ask_string(self,mensage,CLI_TRIM);
@@ -131,3 +135,4 @@ double CliInterface_ask_double(struct CliInterface *self,const char *mensage){
 
    }
 }
+
