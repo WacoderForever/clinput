@@ -10,7 +10,7 @@ CliInterface newCliInterface(){
 
     self.invalid_long_menssage = "The value its not an Integer";
     self.invalid_double_menssage = "The value its not a double";
-    self.wrong_option_menssage = "These its not an valid option";
+    self.wrong_option_menssage = "These option its not in :";
 
     //methods
     self.ask_string = CliInterface_ask_string;
@@ -118,11 +118,13 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
             i++;
             continue;
         }
+
         if(current_char == '|'){
             char *trimed = cli_trim_string(buffer);
             if(trimed == NULL){
                 continue;
             };
+
             structured_options[total_options] = trimed;
             buffer_size = 0;
             total_options++;
@@ -142,27 +144,14 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
         total_options++;
     };
 
-    char formated_mensage[3000];
-
-    sprintf(formated_mensage,"%s (",mensage);
-    for(int i = 0; i <total_options; i++ ){
-        char *current_option = structured_options[i];
-        strcat(formated_mensage,"\"");
-        strcat(formated_mensage,current_option);
-        strcat(formated_mensage,"\"");
-        if(i < total_options -1){
-            strcat(formated_mensage,",");
-
-        }
-    }
-    strcat(formated_mensage,")");
+;
 
     //checking if the awsner its valid
 
     int selected_option;
     while (true){
 
-        char *result = self->ask_string(self,formated_mensage,CLI_TRIM);
+        char *result = self->ask_string(self,mensage,CLI_TRIM);
         bool ended = false;
 
         for(int i = 0; i <total_options; i++ ) {
@@ -180,7 +169,20 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
             break;
         }
         else{
-            printf("%s %s\n",self->error_color,self->wrong_option_menssage);
+            char formated_mensage[3000];
+            sprintf(formated_mensage,"%s (",self->wrong_option_menssage);
+            for(int i = 0; i <total_options; i++ ){
+                char *current_option = structured_options[i];
+                strcat(formated_mensage,"\"");
+                strcat(formated_mensage,current_option);
+                strcat(formated_mensage,"\"");
+                if(i < total_options -1){
+                    strcat(formated_mensage,",");
+
+                }
+            }
+            strcat(formated_mensage,")");
+            printf("%s %s\n",self->error_color,formated_mensage);
             printf("%s",self->normal_color);
         }
 

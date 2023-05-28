@@ -32,13 +32,14 @@ SOFTWARE.
 #include <ctype.h>
 #include <stdarg.h>
 #include "constants.h"
-#include "extra/extra.h"
 #include "colors.h"
+#include "extra/extra.h"
+
 #include "CliInterface/CliInterface.h"
 
 
-#include "CliInterface/CliInterface.c"
 #include "extra/extra.c"
+#include "CliInterface/CliInterface.c"
 
 
 #endif

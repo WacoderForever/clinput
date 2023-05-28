@@ -7,12 +7,9 @@
 
 long main(){
 
-   CliInterface  interface = newCliInterface();
-   interface.invalid_long_menssage = "these its not an fucking integer";
-
-    int result = interface.ask_long(&interface,"type an integer");
-
-    printf("(%s) \n",result);
+    CliInterface  interface = newCliInterface();
+    bool  option = interface.ask_option( &interface,"are you gay? ","yes | no");
+    printf("%i",option);
 
     return 0;
 }
