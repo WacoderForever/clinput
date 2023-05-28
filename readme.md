@@ -53,7 +53,6 @@ long main(){
   
    double weight=interface.ask_double(&interface,"what your weight");
     printf("weight %lf\n",weight);
-    free(wieght);
 
     return 0;
 }
@@ -69,7 +68,6 @@ int main(){
    CliInterface  interface = newCliInterface();
    long age=interface.ask_long(&interface,"what is your age");
    printf("age %li\n",age);
-   free(age);
     return 0;
 }
 ~~~
@@ -94,7 +92,6 @@ int main(){
    CliInterface  interface = newCliInterface();
    long age=interface.ask_long(&interface,"what is your age");
    printf("age %li\n",age);
-   free(age);
     return 0;
 }
 ~~~
