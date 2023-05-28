@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "clinput.h": "c"
+        "clinput.h": "c",
+        "TEST2.C": "cpp"
     }
 }
