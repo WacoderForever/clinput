@@ -12,7 +12,7 @@ CliInterface newCliInterface(){
 
     self.invalid_long_menssage = "The value its not an Integer";
     self.invalid_double_menssage = "The value its not a double";
-    self.wrong_option_menssage = "The value should be betwen #options#";
+    self.wrong_option_menssage = "These its not an valid option";
 
     //methods
     self.ask_string = CliInterface_ask_string;
@@ -110,7 +110,7 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
     int total_options = 0;
 
     long options_text_size = strlen(options);
-    char buffer[1000];
+    char buffer[1000] = {0};
     int buffer_size = 0;
 
     for(int i =0; i < options_text_size; i++){
@@ -181,6 +181,11 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
         if(ended){
             break;
         }
+        else{
+            printf("%s %s\n",self->error_color,self->wrong_option_menssage);
+            printf("%s",self->normal_color);
+        }
+
     }
 
     //free memory
@@ -188,6 +193,7 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
         char *current_option = structured_options[i];
         free(current_option);
     }
+
 
 
     return selected_option;
