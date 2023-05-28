@@ -25,81 +25,78 @@ long main(){
 
 ### Usage Functions 
 CLi input gives extensive coverage of functions that improve visuals when using the command line
-##### Dealing with string
-~~~~~c
-char * CliInterface_ask_string(struct CliInterface *self,const char *mensage,bool trim){
+#### Dealing with string
+The method "ask_string" is used to pass the string
+~~~c
+    #include "clinput.h"
 
-    if(mensage[strlen(mensage)-1] != '\n'){
-        printf("%s %s: ",self->ask_color,mensage);
-    }
-    else{
-        printf("%s %s",self->ask_color,mensage);
-    }
-    printf("%s",self->response_color);
+long main(){
 
-    fflush(stdin);
-    char value[3000];
-    int value_size;
+   CliInterface  interface = newCliInterface();
 
-    for(value_size =0; value_size < 1000;value_size++){
-        char ch;
-        ch = getchar();
-        if(ch == '\n'){
-            break;
-        }
-        value[value_size] = ch;
-    }
-    printf("%s",self->normal_color);
-
-
-    char *formated_value = (char*)malloc(value_size + 2);
-    strcpy(formated_value,"\0");
-
-    if (trim == CLI_NOT_TRIM){
-        strcpy(formated_value,value);
-        formated_value[value_size]= '\0';
-        return formated_value;
-    }
-
-    //implementing the trim system
-
-    bool finded_start = false;
-    int text_size = 0;
-
-
-    for(int i = 0; i < value_size;i++){
-        char current_char = value[i];
-
-        if(current_char != ' '){
-            finded_start = true;
-        }
-        if(finded_start){
-            formated_value[text_size] = current_char;
-            text_size+=1;
-        }
-    }
-
-
-    formated_value[text_size] = '\0';
-
-    for(int i = text_size; i > 0; i--){
-        char current_char = formated_value[i];
-
-        if(current_char != ' ' && current_char != '\n' && current_char!= '\0'){
-            formated_value[i+1] = '\0';
-            break;
-        }
-    }
-
-    return formated_value;
-
-
+   char *name = interface.ask_string(&interface,"type your name",CLI_TRIM);
+    printf("name: %s\n",name);
+    free(name);
+    return 0;
 }
-~~~~~
+~~~
+#### Dealing with double
+The method "ask_double" is used to pass the double value
+~~~c
+    #include "clinput.h"
 
 
+long main(){
+
+   CliInterface  interface = newCliInterface();
+
+  
+   double weight=interface.ask_double(&interface,"what your weight");
+    printf("weight %lf\n",weight);
+    free(wieght);
+
+    return 0;
+}
+~~~
+#### Dealing with integers
+ask_long method passes the long integer 
+~~~c
+    #include "clinput.h"
+
+
+int main(){
+
+   CliInterface  interface = newCliInterface();
+   long age=interface.ask_long(&interface,"what is your age");
+   printf("age %li\n",age);
+   free(age);
+    return 0;
+}
+~~~
 ### Configuring colors 
+The CLI_[COLOR_NAME] gives definition of color to be used on an aspect
+~~~c
+    #include "clinput.h"
+    self.warning_color = CLI_YELLOW; //sets warning color to yellow
+    self.error_color = CLI_RED; //sets error color to red
+    self.normal_color = CLI_WHITE; //sets normal color to white
+~~~
 
 
 ### Configuring errors mensags
+Error messages are generated when invalid characters are produced,when a value other than an integer is entered, in the code segment below a default error message "The value its not an Integer" is generated.
+~~~c
+    #include "clinput.h"
+
+
+int main(){
+
+   CliInterface  interface = newCliInterface();
+   long age=interface.ask_long(&interface,"what is your age");
+   printf("age %li\n",age);
+   free(age);
+    return 0;
+}
+~~~
+
 
