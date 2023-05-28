@@ -19,7 +19,7 @@ CliInterface newCliInterface(){
 
     self.ask_long= CliInterface_ask_long;
     self.ask_double= CliInterface_ask_double;
-
+    self.ask_option = CliInterface_ask_option;
     return self;
 
 }
@@ -136,3 +136,19 @@ double CliInterface_ask_double(struct CliInterface *self,const char *mensage){
    }
 }
 
+int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,char *options[]){
+    int options_size = sizeof(options)  / sizeof(options[0]);
+
+    char formated_mensage[3000];
+    sprintf(formated_mensage,"%s: (",mensage);
+
+    for(int i = 0; i < options_size; i++){
+        strcat(formated_mensage,options[i]);
+        strcat(formated_mensage," ");
+    }
+    strcat(formated_mensage,")");
+
+
+    char *result = self->ask_string(self,formated_mensage,CLI_TRIM);
+
+}

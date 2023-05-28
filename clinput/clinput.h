@@ -30,6 +30,7 @@ SOFTWARE.
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdarg.h>
 #include "constants.h"
 #include "extra/extra.h"
 #include "colors.h"
