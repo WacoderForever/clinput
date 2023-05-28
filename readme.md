@@ -162,7 +162,7 @@ long main(){
 
    CliInterface  interface = newCliInterface();
    interface.wrong_option_menssage="Come on don't panic...you are either one of those";
-    bool chosed = interface.ask_option(&interface,"Are you religious" ,"yes | no");
+    int chosed = interface.ask_option(&interface,"Are you religious" ,"yes | no");
 
     printf("%i\n",chosed);
     return 0;
