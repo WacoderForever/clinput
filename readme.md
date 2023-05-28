@@ -74,7 +74,7 @@ int main(){
 ### Configuring colors 
 The CLI_[COLOR_NAME] gives definition of color to be used on an aspect
 #### Setting warning colours
-The warning color is set to yellow.
+The warning color is set to red.
 ~~~c
 #include "clinput/clinput.h"
  int main(){
