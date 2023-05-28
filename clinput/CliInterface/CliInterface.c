@@ -10,15 +10,12 @@ CliInterface newCliInterface(){
     self.response_color =CLI_MAGENTA;
     self.sucess_color = CLI_BLUE;
 
-
-    self.invalid_type_mensage = "The value its not an #type#";
-    self.min_value_mensage = "The value its lower than #min_value#";
-    self.max_value_mensage = "The value its higher than #max_value#";
+    self.invalid_int_menssage = "The value its not an Integer";
     self.wrong_option_menssage = "The value should be betwen #options#";
 
     //methods
     self.ask_string = CliInterface_ask_string;
-    self.ask_integer= CliInterface_ask_integer;
+    self.ask_long= CliInterface_ask_long;
     return self;
 
 }
@@ -93,11 +90,23 @@ char * CliInterface_ask_string(struct CliInterface *self,const char *mensage,boo
 
 
 }
-long CliInterface_ask_integer(struct CliInterface *self,const char *mensage){
+long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
    while(true){
      char *value=self->ask_string(self,mensage,CLI_TRIM);
-    long converted_value=atoi(value);
-    free(value);
-    return converted_value;
+    long converted;
+     int result =  sscanf(value,"%li",&converted);
+     free(value);
+     //means its an error
+
+     if(result == 0){
+         printf("%s %s\n",self->error_color,self->invalid_int_menssage);
+         printf("%s",self->normal_color);
+
+     }
+     else{
+         return converted;
+     }
+
    }
+
 }

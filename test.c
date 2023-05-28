@@ -8,9 +8,10 @@
 long main(){
 
     CliInterface  interface = newCliInterface();
-    interface.ask_color=CLI_RED;
+
     char *name = interface.ask_string(&interface,"type your name",CLI_TRIM);
-    int k=interface.ask_integer(&interface,"type integer");
+    long k=interface.ask_long(&interface,"type integer");
+
 
 
     return 0;
