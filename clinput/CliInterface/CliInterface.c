@@ -18,6 +18,7 @@ CliInterface newCliInterface(){
 
     //methods
     self.ask_string = CliInterface_ask_string;
+    self.ask_integer=CliInterface_ask_integer;
     return self;
 
 }
@@ -91,4 +92,10 @@ char * CliInterface_ask_string(struct CliInterface *self,char *mensage,bool trim
     return formated_value;
 
 
+}
+long CliInterface_ask_integer(struct CliInterface *self,char *mensage,int min,int max){
+    char *value=self->ask_string(self,mensage,CLI_TRIM);
+    long converted_value=atoi(value);
+    free(value);
+    return converted_value;
 }
