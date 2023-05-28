@@ -1,18 +1,21 @@
+//
+// Created by jurandi on 27-05-2023.
+//
 
-#include "clinput.h"
+#include "clinput/clinput.h"
 
 
 long main(){
 
    CliInterface  interface = newCliInterface();
 
-   char *name = interface.ask_string(&interface,"type your name",CLI_TRIM);
-   long age=interface.ask_long(&interface,"what is your age");
-   double weight=interface.ask_double(&interface,"what your weight");
 
-    printf("name: %s\n",name);
-    printf("age %li\n",age);
-    printf("weight %lf\n",weight);
 
+    // long k=interface.ask_long(&interface,"type integer");
+   // double z=interface.ask_double(&interface,"type double");
+
+    int chosed = interface.ask_option(&interface,"type the option" ,"aaa | aaa | bbb");
+
+    printf("%i\n",chosed);
     return 0;
 }

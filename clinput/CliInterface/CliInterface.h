@@ -23,8 +23,7 @@ typedef struct CliInterface{
     long  (*ask_long)(struct CliInterface *self,const char *mensage);
 
     double (*ask_double)(struct CliInterface *self,const char *mensage);
-    int (*ask_option)(struct CliInterface *self,const  char *mensage,char *options[]);
-
+    int (*ask_option)(struct CliInterface *self,const  char *mensage,const char *options);
 
 
 
@@ -39,4 +38,4 @@ CliInterface newCliInterface();
 char * CliInterface_ask_string(struct  CliInterface *self,const char *mensage,bool trim);
 long   CliInterface_ask_long(struct CliInterface *self,const char *mensage);
 double CliInterface_ask_double(struct CliInterface *self,const char *mensage);
-int CliInterface_ask_option(struct CliInterface *self, const  char *mensage,char *options[]);
+int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const char *options);
