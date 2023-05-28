@@ -14,7 +14,7 @@ long main(){
     // long k=interface.ask_long(&interface,"type integer");
    // double z=interface.ask_double(&interface,"type double");
 
-    int chosed = interface.ask_option(&interface,"type the option" ,"aaa | aaa | bbb");
+    int chosed = interface.ask_option(&interface,"type the option" ,"aaa | aaa | bbb | lll");
 
     printf("%i\n",chosed);
     return 0;
