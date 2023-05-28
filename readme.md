@@ -168,6 +168,22 @@ long main(){
     return 0;
 }
 ~~~
+### Printing texts with color
+This code segment sets the output in printf() to the color white
+~~~c
+    #include "clinput/clinput.h"
+
+
+long main(){
+
+
+    CliInterface  interface = newCliInterface();
+    interface.print_color=CLI_WHITE;
+    interface.print(&interface,"aaaaa %c  %s aaa",'a',"cxxx");
+    printf("\nnormal denovo\n");
+
+    return 0;
+}
 
 ### Configuring errors mensags
 #### Integer errors

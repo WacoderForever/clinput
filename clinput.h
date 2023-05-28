@@ -33,14 +33,15 @@ SOFTWARE.
 #include <stdarg.h>
 
 #define CLI_TRIM true
-#define CLI_NOT_TRIM false
-char *cli_trim_string(const char *value);#define CLI_RED     "\x1b[31m"
+#define CLI_NOT_TRIM false#define CLI_RED     "\x1b[31m"
 #define CLI_GREEN   "\x1b[32m"
 #define CLI_YELLOW  "\x1b[33m"
 #define CLI_BLUE    "\x1b[34m"
 #define CLI_MAGENTA "\x1b[35m"
 #define CLI_CYAN    "\x1b[36m"
 #define CLI_WHITE   "\x1b[0m"
+
+char *cli_trim_string(const char *value);
 
 
 typedef struct CliInterface{
@@ -50,6 +51,7 @@ typedef struct CliInterface{
     char * error_color;
     char * normal_color;
     char * ask_color;
+    char * print_color;
     char * response_color;
 
 
@@ -60,12 +62,10 @@ typedef struct CliInterface{
 
 
     char   *(*ask_string)(struct CliInterface *self,const char *mensage,bool trim);
-
-
     long  (*ask_long)(struct CliInterface *self,const char *mensage);
-
     double (*ask_double)(struct CliInterface *self,const char *mensage);
     int (*ask_option)(struct CliInterface *self,const  char *mensage,const char *options);
+    void (*print)(struct CliInterface *self,const  char *format,...);
 
 
 
@@ -76,25 +76,69 @@ typedef struct CliInterface{
 //constructor method
 CliInterface newCliInterface();
 
-
 char * CliInterface_ask_string(struct  CliInterface *self,const char *mensage,bool trim);
 long   CliInterface_ask_long(struct CliInterface *self,const char *mensage);
 double CliInterface_ask_double(struct CliInterface *self,const char *mensage);
 int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const char *options);
+void CliInterface_print(struct CliInterface *self,const  char *format,...);
 
 
+
+
+char *cli_trim_string(const char *value){
+    //implementing the trim system
+
+    long value_size = strlen(value);
+    if(value_size == 0){
+        return NULL;
+    }
+
+    char *formated_value = (char*)malloc(value_size + 2);
+    bool finded_start = false;
+    int text_size = 0;
+
+    for(int i = 0; i < value_size;i++){
+
+        char current_char = value[i];
+
+        if( current_char != ' '){
+            finded_start = true;
+        }
+
+
+        if(finded_start){
+            formated_value[text_size] = current_char;
+            text_size++;
+        }
+    }
+
+    for(int i = text_size; i >= 0;i--){
+        char current_char = formated_value[i -1];
+        if(current_char !=  ' '){
+            formated_value[i] = '\0';
+            break;
+        }
+
+    }
+
+
+
+    return formated_value;
+
+}
 CliInterface newCliInterface(){
     CliInterface self;
 
 
     self.error_color = CLI_RED;
     self.normal_color = CLI_WHITE;
+    self.print_color = CLI_BLUE;
     self.ask_color = CLI_GREEN;
     self.response_color =CLI_MAGENTA;
 
     self.invalid_long_menssage = "The value its not an Integer";
     self.invalid_double_menssage = "The value its not a double";
-    self.wrong_option_menssage = "These its not an valid option";
+    self.wrong_option_menssage = "These option its not in :";
 
     //methods
     self.ask_string = CliInterface_ask_string;
@@ -102,6 +146,7 @@ CliInterface newCliInterface(){
     self.ask_long= CliInterface_ask_long;
     self.ask_double= CliInterface_ask_double;
     self.ask_option = CliInterface_ask_option;
+    self.print = CliInterface_print;
     return self;
 
 }
@@ -202,11 +247,13 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
             i++;
             continue;
         }
+
         if(current_char == '|'){
             char *trimed = cli_trim_string(buffer);
             if(trimed == NULL){
                 continue;
             };
+
             structured_options[total_options] = trimed;
             buffer_size = 0;
             total_options++;
@@ -226,27 +273,14 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
         total_options++;
     };
 
-    char formated_mensage[3000];
-
-    sprintf(formated_mensage,"%s (",mensage);
-    for(int i = 0; i <total_options; i++ ){
-        char *current_option = structured_options[i];
-        strcat(formated_mensage,"\"");
-        strcat(formated_mensage,current_option);
-        strcat(formated_mensage,"\"");
-        if(i < total_options -1){
-            strcat(formated_mensage,",");
-
-        }
-    }
-    strcat(formated_mensage,")");
+;
 
     //checking if the awsner its valid
 
     int selected_option;
     while (true){
 
-        char *result = self->ask_string(self,formated_mensage,CLI_TRIM);
+        char *result = self->ask_string(self,mensage,CLI_TRIM);
         bool ended = false;
 
         for(int i = 0; i <total_options; i++ ) {
@@ -264,7 +298,20 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
             break;
         }
         else{
-            printf("%s %s\n",self->error_color,self->wrong_option_menssage);
+            char formated_mensage[3000];
+            sprintf(formated_mensage,"%s (",self->wrong_option_menssage);
+            for(int i = 0; i <total_options; i++ ){
+                char *current_option = structured_options[i];
+                strcat(formated_mensage,"\"");
+                strcat(formated_mensage,current_option);
+                strcat(formated_mensage,"\"");
+                if(i < total_options -1){
+                    strcat(formated_mensage,",");
+
+                }
+            }
+            strcat(formated_mensage,")");
+            printf("%s %s\n",self->error_color,formated_mensage);
             printf("%s",self->normal_color);
         }
 
@@ -282,43 +329,60 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
 
     return 0;
 }
-char *cli_trim_string(const char *value){
-    //implementing the trim system
-    long value_size = strlen(value);
-    if(value_size == 0){
-        return NULL;
-    }
-
-    char *formated_value = (char*)malloc(value_size + 2);
-
-    bool finded_start = false;
-    int text_size = 0;
 
 
-    for(int i = 0; i < value_size;i++){
-        char current_char = value[i];
+void CliInterface_print(struct CliInterface *self,const  char *format,...){
 
-        if(current_char != ' '){
-            finded_start = true;
+    va_list  argptr;
+    va_start(argptr, format);
+
+    int text_size = strlen(format);
+
+    printf("%s",self->print_color);
+
+    for(int i =0;i < text_size ;i++){
+        char last_char =  format[i-1];
+        char current_char =  format[i];
+        if(last_char =='%'){
+            if(current_char == 'd' || current_char == 'i'){
+
+                printf("%d", va_arg(argptr,int));
+            }
+
+            else if(current_char == 'c'){
+                char result = va_arg(argptr,int);
+                printf("%c",result);
+            }
+
+            else if(current_char == 'b'){
+                bool value = va_arg(argptr,int);
+                if(value){
+                    printf("true");
+                }else{
+                    printf("false");
+                }
+            }
+            else if(current_char == 's'){
+                const char *value = va_arg(argptr,const char*);
+                printf("%s",value);
+            }
+
+            else{
+                printf("%c",current_char);
+            }
+
+            continue;
         }
-        if(finded_start){
-            formated_value[text_size] = current_char;
-            text_size+=1;
+
+        if(current_char == '%'){
+            continue;
         }
+        printf("%c",current_char);
+
     }
+    printf("%s",self->normal_color);
+    va_end(argptr);
 
-    formated_value[text_size] = '\0';
-
-    for(int i = text_size; i > 0; i--){
-        char current_char = formated_value[i];
-
-        if(current_char != ' ' && current_char != '\n' && current_char!= '\0'){
-            formated_value[i+1] = '\0';
-            break;
-        }
-    }
-
-    return formated_value;
 }
 
 #endif
