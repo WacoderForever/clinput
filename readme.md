@@ -1,6 +1,11 @@
+# Description
+The CLi input its an lib that allows you to get user informations in an beautfull way
 
+
+### Instalation
+Cli Input its made to be easy to install , just copy and paste **clinput.h** to your project 
+~~~c
 #include "clinput.h"
-
 
 long main(){
 
@@ -16,3 +21,13 @@ long main(){
 
     return 0;
 }
+~~~
+
+### Usage Functions 
+
+
+### Configuring colors 
+
+
+### Configuring errors mensags
+

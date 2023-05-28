@@ -137,6 +137,7 @@ double CliInterface_ask_double(struct CliInterface *self,const char *mensage){
 }
 
 int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,char *options[]){
+    /*
     int options_size = sizeof(options)  / sizeof(options[0]);
 
     char formated_mensage[3000];
@@ -150,5 +151,5 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,char 
 
 
     char *result = self->ask_string(self,formated_mensage,CLI_TRIM);
-
+    */
 }

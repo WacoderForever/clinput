@@ -30,6 +30,7 @@ SOFTWARE.
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdarg.h>
 
 #define CLI_TRIM true
 #define CLI_NOT_TRIM false
@@ -54,16 +55,19 @@ typedef struct CliInterface{
 
 
     //warnings mensage
-    char * invalid_int_menssage;
+    char * invalid_long_menssage;
     char * invalid_double_menssage;
     char * wrong_option_menssage;
 
+
     char   *(*ask_string)(struct CliInterface *self,const char *mensage,bool trim);
 
-    int   (*ask_integer)(struct CliInterface *self,const char *mensage);
+
     long  (*ask_long)(struct CliInterface *self,const char *mensage);
 
     double (*ask_double)(struct CliInterface *self,const char *mensage);
+    int (*ask_option)(struct CliInterface *self,const  char *mensage,char *options[]);
+
 
 
 
@@ -78,6 +82,8 @@ CliInterface newCliInterface();
 char * CliInterface_ask_string(struct  CliInterface *self,const char *mensage,bool trim);
 long   CliInterface_ask_long(struct CliInterface *self,const char *mensage);
 double CliInterface_ask_double(struct CliInterface *self,const char *mensage);
+int CliInterface_ask_option(struct CliInterface *self, const  char *mensage,char *options[]);
+
 
 
 CliInterface newCliInterface(){
@@ -91,14 +97,16 @@ CliInterface newCliInterface(){
     self.response_color =CLI_MAGENTA;
     self.sucess_color = CLI_BLUE;
 
-    self.invalid_int_menssage = "The value its not an Integer";
+    self.invalid_long_menssage = "The value its not an Integer";
     self.invalid_double_menssage = "The value its not a double";
     self.wrong_option_menssage = "The value should be betwen #options#";
 
     //methods
     self.ask_string = CliInterface_ask_string;
+
     self.ask_long= CliInterface_ask_long;
     self.ask_double= CliInterface_ask_double;
+    self.ask_option = CliInterface_ask_option;
     return self;
 
 }
@@ -182,7 +190,7 @@ long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
      //means its an error
 
      if(result == 0){
-         printf("%s %s\n",self->error_color,self->invalid_int_menssage);
+         printf("%s %s\n",self->error_color,self->invalid_long_menssage);
          printf("%s",self->normal_color);
 
      }
@@ -193,11 +201,13 @@ long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
    }
 
 }
-double CliInterface_ask_double(struct CliInteface *self,const char *mensage){
+
+
+double CliInterface_ask_double(struct CliInterface *self,const char *mensage){
      while(true){
      char *value=self->ask_string(self,mensage,CLI_TRIM);
      double converted;
-     int result =  sscanf(value,"%f",&converted);
+     int result =  sscanf(value,"%lf",&converted);
      free(value);
      //means its an error
 
@@ -211,5 +221,23 @@ double CliInterface_ask_double(struct CliInteface *self,const char *mensage){
      }
 
    }
+}
+
+int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,char *options[]){
+    /*
+    int options_size = sizeof(options)  / sizeof(options[0]);
+
+    char formated_mensage[3000];
+    sprintf(formated_mensage,"%s: (",mensage);
+
+    for(int i = 0; i < options_size; i++){
+        strcat(formated_mensage,options[i]);
+        strcat(formated_mensage," ");
+    }
+    strcat(formated_mensage,")");
+
+
+    char *result = self->ask_string(self,formated_mensage,CLI_TRIM);
+    */
 }
 #endif
