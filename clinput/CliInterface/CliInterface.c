@@ -112,11 +112,11 @@ long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
    }
 
 }
-double CliInterface_ask_double(struct CliInteface *self,const char *mensage){
+double CliInterface_ask_double(struct CliInterface *self,const char *mensage){
      while(true){
      char *value=self->ask_string(self,mensage,CLI_TRIM);
      double converted;
-     int result =  sscanf(value,"%f",&converted);
+     int result =  sscanf(value,"%lf",&converted);
      free(value);
      //means its an error
 

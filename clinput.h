@@ -55,6 +55,7 @@ typedef struct CliInterface{
 
     //warnings mensage
     char * invalid_int_menssage;
+    char * invalid_double_menssage;
     char * wrong_option_menssage;
 
     char   *(*ask_string)(struct CliInterface *self,const char *mensage,bool trim);
@@ -62,7 +63,7 @@ typedef struct CliInterface{
     int   (*ask_integer)(struct CliInterface *self,const char *mensage);
     long  (*ask_long)(struct CliInterface *self,const char *mensage);
 
-    double (*ask_double)(struct CliInterface *self,const char *mensage,double min, double max);
+    double (*ask_double)(struct CliInterface *self,const char *mensage);
 
 
 
@@ -76,6 +77,7 @@ CliInterface newCliInterface();
 
 char * CliInterface_ask_string(struct  CliInterface *self,const char *mensage,bool trim);
 long   CliInterface_ask_long(struct CliInterface *self,const char *mensage);
+double CliInterface_ask_double(struct CliInterface *self,const char *mensage);
 
 
 CliInterface newCliInterface(){
@@ -90,11 +92,13 @@ CliInterface newCliInterface(){
     self.sucess_color = CLI_BLUE;
 
     self.invalid_int_menssage = "The value its not an Integer";
+    self.invalid_double_menssage = "The value its not a double";
     self.wrong_option_menssage = "The value should be betwen #options#";
 
     //methods
     self.ask_string = CliInterface_ask_string;
     self.ask_long= CliInterface_ask_long;
+    self.ask_double= CliInterface_ask_double;
     return self;
 
 }
@@ -188,5 +192,24 @@ long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
 
    }
 
+}
+double CliInterface_ask_double(struct CliInteface *self,const char *mensage){
+     while(true){
+     char *value=self->ask_string(self,mensage,CLI_TRIM);
+     double converted;
+     int result =  sscanf(value,"%f",&converted);
+     free(value);
+     //means its an error
+
+     if(result == 0){
+         printf("%s %s\n",self->error_color,self->invalid_double_menssage);
+         printf("%s",self->normal_color);
+
+     }
+     else{
+         return converted;
+     }
+
+   }
 }
 #endif
