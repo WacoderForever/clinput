@@ -32,7 +32,9 @@ SOFTWARE.
 #include <ctype.h>
 #include <stdarg.h>
 #include "constants.h"
+
 #include "colors.h"
+
 #include "extra/extra.h"
 
 #include "CliInterface/CliInterface.h"

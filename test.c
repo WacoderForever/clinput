@@ -2,7 +2,7 @@
 // Created by jurandi on 27-05-2023.
 //
 
-#include "clinput/clinput.h"
+#include "clinput.h"
 
 
 long main(){
