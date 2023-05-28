@@ -2,13 +2,11 @@
 CliInterface newCliInterface(){
     CliInterface self;
 
-    self.warning_color = CLI_YELLOW;
+
     self.error_color = CLI_RED;
     self.normal_color = CLI_WHITE;
-
     self.ask_color = CLI_GREEN;
     self.response_color =CLI_MAGENTA;
-    self.sucess_color = CLI_BLUE;
 
     self.invalid_long_menssage = "The value its not an Integer";
     self.invalid_double_menssage = "The value its not a double";

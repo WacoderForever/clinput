@@ -8,14 +8,11 @@
 long main(){
 
    CliInterface  interface = newCliInterface();
+   interface.invalid_long_menssage = "these its not an fucking integer";
 
+    int result = interface.ask_long(&interface,"type an integer");
 
+    printf("(%s) \n",result);
 
-    // long k=interface.ask_long(&interface,"type integer");
-   // double z=interface.ask_double(&interface,"type double");
-
-    int chosed = interface.ask_option(&interface,"type the option" ,"aaa | aaa | bbb");
-
-    printf("%i\n",chosed);
     return 0;
 }
