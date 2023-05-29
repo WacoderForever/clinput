@@ -12,7 +12,7 @@ CliInterface newCliInterface(){
 
     self.invalid_long_menssage = "The value its not an Integer";
     self.invalid_double_menssage = "The value its not a double";
-    self.wrong_option_menssage = "These option its not in :";
+    self.wrong_option_menssage = "These option is not in the list";
 
     //methods
     self.ask_string = CliInterface_ask_string;
