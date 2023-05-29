@@ -71,6 +71,20 @@ int main(){
     return 0;
 }
 ~~~
+#### Generating warnings
+Warnigs are set incase certain conditions are not met.The code segment generates warning message "this is not good".
+~~~c
+#include "clinput.h"
+
+long main(){
+
+
+    CliInterface  interface = newCliInterface();
+    //bool  option = interface.ask_option( &interface,"are you religious? ","yes | no");
+   interface.warning(&interface,"this is not good");
+    return 0;
+}
+~~~
 ### Configuring colors 
 The CLI_[COLOR_NAME] gives definition of color to be used on an aspect
 #### Setting warning colours
