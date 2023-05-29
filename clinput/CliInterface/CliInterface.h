@@ -6,6 +6,7 @@ typedef struct CliInterface{
 
     char * error_color;
     char * normal_color;
+    char *warning_color;
     char * ask_color;
     char * print_color;
     char * response_color;
@@ -22,7 +23,7 @@ typedef struct CliInterface{
     double (*ask_double)(struct CliInterface *self,const char *mensage);
     int (*ask_option)(struct CliInterface *self,const  char *mensage,const char *options);
     void (*print)(struct CliInterface *self,const  char *format,...);
-
+    void (*warning)(struct CliInterface *self,const  char *format,...);
 
 
 
@@ -37,4 +38,4 @@ long   CliInterface_ask_long(struct CliInterface *self,const char *mensage);
 double CliInterface_ask_double(struct CliInterface *self,const char *mensage);
 int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const char *options);
 void CliInterface_print(struct CliInterface *self,const  char *format,...);
-
+void CliInterface_warning(struct CliInterface *self,const  char *format,...);

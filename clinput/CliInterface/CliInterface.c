@@ -6,6 +6,7 @@ CliInterface newCliInterface(){
     self.error_color = CLI_RED;
     self.normal_color = CLI_WHITE;
     self.print_color = CLI_BLUE;
+    self.warning_color=CLI_YELLOW;
     self.ask_color = CLI_GREEN;
     self.response_color =CLI_MAGENTA;
 
@@ -19,6 +20,7 @@ CliInterface newCliInterface(){
     self.ask_long= CliInterface_ask_long;
     self.ask_double= CliInterface_ask_double;
     self.ask_option = CliInterface_ask_option;
+    self.warning=CliInterface_warning;
     self.print = CliInterface_print;
     return self;
 
@@ -212,6 +214,59 @@ void CliInterface_print(struct CliInterface *self,const  char *format,...){
     int text_size = strlen(format);
 
     printf("%s",self->print_color);
+
+    for(int i =0;i < text_size ;i++){
+        char last_char =  format[i-1];
+        char current_char =  format[i];
+        if(last_char =='%'){
+            if(current_char == 'd' || current_char == 'i'){
+
+                printf("%d", va_arg(argptr,int));
+            }
+
+            else if(current_char == 'c'){
+                char result = va_arg(argptr,int);
+                printf("%c",result);
+            }
+
+            else if(current_char == 'b'){
+                bool value = va_arg(argptr,int);
+                if(value){
+                    printf("true");
+                }else{
+                    printf("false");
+                }
+            }
+            else if(current_char == 's'){
+                const char *value = va_arg(argptr,const char*);
+                printf("%s",value);
+            }
+
+            else{
+                printf("%c",current_char);
+            }
+
+            continue;
+        }
+
+        if(current_char == '%'){
+            continue;
+        }
+        printf("%c",current_char);
+
+    }
+    printf("%s",self->normal_color);
+    va_end(argptr);
+
+}
+void CliInterface_warning(struct CliInterface *self,const  char *format,...){
+
+    va_list  argptr;
+    va_start(argptr, format);
+
+    int text_size = strlen(format);
+
+    printf("%s",self->warning_color);
 
     for(int i =0;i < text_size ;i++){
         char last_char =  format[i-1];
