@@ -6,7 +6,7 @@ typedef struct CliInterface{
 
     char * error_color;
     char * normal_color;
-    char *warning_color;
+    char * warning_color;
     char * ask_color;
     char * print_color;
     char * response_color;
