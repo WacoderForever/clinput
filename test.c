@@ -2,13 +2,13 @@
 // Created by jurandi on 27-05-2023.
 //
 
-#include "clinput.h"
+#include "clinput/clinput.h"
 
 long main(){
-
-
-    CliInterface  interface = newCliInterface();
-    //bool  option = interface.ask_option( &interface,"are you gay? ","yes | no");
-   interface.warning(&interface,"this is not good");
+   CliInterface interface=newCliInterface();
+    interface.success_color=CLI_MAGENTA;
+    long age=interface.ask_long(&interface,"what is your age");
+    printf("age %li\n",age);
     return 0;
+   
 }

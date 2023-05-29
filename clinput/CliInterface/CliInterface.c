@@ -9,6 +9,7 @@ CliInterface newCliInterface(){
     self.warning_color=CLI_YELLOW;
     self.ask_color = CLI_GREEN;
     self.response_color =CLI_MAGENTA;
+    self.success_color=CLI_MAGENTA;
 
     self.invalid_long_menssage = "The value its not an Integer";
     self.invalid_double_menssage = "The value its not a double";
