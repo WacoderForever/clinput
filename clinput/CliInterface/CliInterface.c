@@ -68,7 +68,7 @@ char * CliInterface_ask_string(struct CliInterface *self,const char *mensage,boo
 long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
    while(true){
      char *value=self->ask_string(self,mensage,CLI_TRIM);
-    long converted;
+     long converted;
      int result =  sscanf(value,"%li",&converted);
      free(value);
      //means its an error
