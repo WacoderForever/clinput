@@ -276,10 +276,7 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
     if(trimed != NULL){
         structured_options[total_options] = trimed;
         total_options++;
-    };
-
-;
-
+    }
     //checking if the awsner its valid
 
     int selected_option;
