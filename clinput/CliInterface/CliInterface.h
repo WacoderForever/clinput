@@ -10,7 +10,6 @@ typedef struct CliInterface{
     char * ask_color;
     char * print_color;
     char * response_color;
-    char *success_color;
 
 
     //warnings mensage

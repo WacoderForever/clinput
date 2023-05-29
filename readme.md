@@ -3,7 +3,7 @@ The CLi input its an lib that allows you to get user informations in an beautful
 
 
 ### Installation
-Cli Input its made to be easy to install , just copy and paste **clinput.h** to your project CLI_TRIM 
+Cli Input its made to be easy to install , just copy and paste **clinput.h** to your project.
 ~~~c
 #include "clinput.h"
 
@@ -72,7 +72,6 @@ int main(){
 }
 ~~~
 #### Generating warnings
-Warnigs are set incase certain conditions are not met.The code segment generates warning message "this is not good".
 ~~~c
 #include "clinput.h"
 int main(){
@@ -149,19 +148,6 @@ The ask color is set to blue.
  int main(){
     CliInterface interface=newCliInterface();
     interface.response_color=CLI_RED;
-    long age=interface.ask_long(&interface,"what is your age");
-    printf("age %li\n",age);
-    return 0;
-
- }
- ~~~
- #### Setting success colour
- The code segment changes the default success color to magenta.
-~~~c
-#include "clinput.h"
- int main(){
-    CliInterface interface=newCliInterface();
-    interface.success_color=CLI_MAGENTA;
     long age=interface.ask_long(&interface,"what is your age");
     printf("age %li\n",age);
     return 0;
