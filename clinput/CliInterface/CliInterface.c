@@ -13,6 +13,7 @@ CliInterface newCliInterface(){
     self.invalid_long_menssage = "The value its not an Integer";
     self.invalid_double_menssage = "The value its not a double";
     self.wrong_option_menssage = "These option is not in the list";
+    self.empty_response_menssage = "Empty Response are not allowed";
 
     //methods
     self.ask_string = CliInterface_ask_string;
@@ -30,53 +31,71 @@ CliInterface newCliInterface(){
 
 char * CliInterface_ask_string(struct CliInterface *self,const char *mensage,bool trim){
 
-    if(mensage[strlen(mensage)-1] != '\n'){
-        printf("%s %s: ",self->ask_color,mensage);
-    }
-    else{
-        printf("%s %s",self->ask_color,mensage);
-    }
-    printf("%s",self->response_color);
-
-    fflush(stdin);
-    char value[3000];
-    int value_size;
-
-    for(value_size =0; value_size < 1000;value_size++){
-        char ch;
-        ch = getchar();
-        if(ch == '\n'){
-            break;
+    while(true){
+        if(mensage[strlen(mensage)-1] != '\n'){
+            printf("%s %s: ",self->ask_color,mensage);
         }
-        value[value_size] = ch;
-    }
-    printf("%s",self->normal_color);
+        else{
+            printf("%s %s",self->ask_color,mensage);
+        }
+        printf("%s",self->response_color);
 
-    value[value_size]= '\0';
+        fflush(stdin);
 
-    if (trim == CLI_NOT_TRIM){
-        char *formated_value = (char*)malloc(value_size + 2);
-        strcpy(formated_value,value);
-        return formated_value;
+        char value[3000];
+        int value_size;
+
+        for(value_size =0; value_size < 1000;value_size++){
+            char ch;
+            ch = getchar();
+            if(ch == '\n'){
+                break;
+            }
+            value[value_size] = ch;
+        }
+        printf("%s",self->normal_color);
+
+        value[value_size]= '\0';
+
+        if (trim == CLI_NOT_TRIM){
+            char *formated_value = (char*)malloc(value_size + 2);
+            strcpy(formated_value,value);
+            if(strlen(formated_value) == 0){
+                printf("%s %s\n",self->error_color,self->empty_response_menssage);
+                printf("%s",self->normal_color);
+                free(formated_value);
+                continue;
+            }
+            return formated_value;
+        }
+
+        else{
+            char *result =  cli_trim_string(value);
+            if(!result){
+                printf("%s %s\n",self->error_color,self->empty_response_menssage);
+                printf("%s",self->normal_color);
+                continue;
+            }
+            return result;
+        }
     }
-    else{
-        return cli_trim_string(value);
-    }
+
+
+
 }
 
 
 long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
    while(true){
      char *value=self->ask_string(self,mensage,CLI_TRIM);
+
      long converted;
      int result =  sscanf(value,"%li",&converted);
      free(value);
      //means its an error
-
      if(result == 0){
          printf("%s %s\n",self->error_color,self->invalid_long_menssage);
          printf("%s",self->normal_color);
-
      }
      else{
          return converted;
@@ -90,6 +109,7 @@ long CliInterface_ask_long(struct CliInterface *self,const char *mensage){
 double CliInterface_ask_double(struct CliInterface *self,const char *mensage){
      while(true){
      char *value=self->ask_string(self,mensage,CLI_TRIM);
+
      double converted;
      int result =  sscanf(value,"%lf",&converted);
      free(value);
@@ -160,16 +180,16 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
     while (true){
         bool ended = false;
         char *result = self->ask_string(self,mensage,CLI_TRIM);
-        if(result){
-            for(int i = 0; i <total_options; i++ ) {
-                char *current_option = structured_options[i];
-                if(strcmp(current_option,result) == 0){
-                    selected_option = i;
-                    ended = true;
-                    break;
-                }
+
+        for(int i = 0; i <total_options; i++ ) {
+            char *current_option = structured_options[i];
+            if(strcmp(current_option,result) == 0){
+                selected_option = i;
+                ended = true;
+                break;
             }
         }
+
         free(result);
         if(ended){
             break;

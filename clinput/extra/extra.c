@@ -19,11 +19,16 @@ char *cli_trim_string(const char *value){
             finded_start = true;
         }
 
-
         if(finded_start){
             formated_value[text_size] = current_char;
             text_size++;
         }
+    }
+
+
+    if(text_size == 0){
+        free(formated_value);
+        return NULL;
     }
 
     for(int i = text_size; i >= 0;i--){
@@ -34,7 +39,6 @@ char *cli_trim_string(const char *value){
         }
 
     }
-
 
 
     return formated_value;

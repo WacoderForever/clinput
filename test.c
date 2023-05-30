@@ -2,12 +2,12 @@
 // Created by jurandi on 27-05-2023.
 //
 
-#include "clinput/clinput.h"
+#include "clinput.h"
 
-long main(){
+int main(){
+
     CliInterface  interface = newCliInterface();
-    int result = interface.ask_option(&interface,"aaaa","red | green | blue");
-
+    int result = interface.ask_option(&interface,"aaa","aaa | wwww|  dddd");
 
     return 0;
    

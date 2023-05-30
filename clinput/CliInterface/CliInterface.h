@@ -16,7 +16,7 @@ typedef struct CliInterface{
     char * invalid_long_menssage;
     char * invalid_double_menssage;
     char * wrong_option_menssage;
-
+    char *empty_response_menssage;
 
     char   *(*ask_string)(struct CliInterface *self,const char *mensage,bool trim);
     long  (*ask_long)(struct CliInterface *self,const char *mensage);
