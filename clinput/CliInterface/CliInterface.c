@@ -112,7 +112,7 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
     int total_options = 0;
 
     long options_text_size = strlen(options);
-    char buffer[1000] = {0};
+    char buffer[100] = {0};
     int buffer_size = 0;
 
     for(int i =0; i < options_text_size; i++){
@@ -126,11 +126,15 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
         if(current_char == '|'){
             char *trimed = cli_trim_string(buffer);
             if(trimed == NULL){
+                buffer_size = 0;
+                memset(buffer,0,100);
                 continue;
             };
 
             structured_options[total_options] = trimed;
             buffer_size = 0;
+            memset(buffer,0,100);
+
             total_options++;
             continue;
         }
@@ -154,21 +158,19 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
 
     int selected_option;
     while (true){
-
-        char *result = self->ask_string(self,mensage,CLI_TRIM);
         bool ended = false;
-
-        for(int i = 0; i <total_options; i++ ) {
-            char *current_option = structured_options[i];
-            if(strcmp(current_option,result) == 0){
-                selected_option = i;
-                ended = true;
-                break;
+        char *result = self->ask_string(self,mensage,CLI_TRIM);
+        if(result){
+            for(int i = 0; i <total_options; i++ ) {
+                char *current_option = structured_options[i];
+                if(strcmp(current_option,result) == 0){
+                    selected_option = i;
+                    ended = true;
+                    break;
+                }
             }
         }
-
         free(result);
-
         if(ended){
             break;
         }
@@ -259,6 +261,7 @@ void CliInterface_print(struct CliInterface *self,const  char *format,...){
     va_end(argptr);
 
 }
+
 void CliInterface_warning(struct CliInterface *self,const  char *format,...){
 
     va_list  argptr;
