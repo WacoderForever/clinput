@@ -172,7 +172,7 @@ int CliInterface_ask_option(struct CliInterface *self,const  char *mensage,const
         total_options++;
     };
 
-;
+
 
     //checking if the awsner its valid
 
