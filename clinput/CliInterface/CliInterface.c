@@ -80,8 +80,6 @@ char * CliInterface_ask_string(struct CliInterface *self,const char *mensage,boo
         }
     }
 
-
-
 }
 
 
